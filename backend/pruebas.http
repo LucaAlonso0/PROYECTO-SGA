@@ -38,6 +38,7 @@ Content-Type: application/json
 
 ###
 GET http://localhost:3000/docentes
+Content-Type: application/json
 
 ###
 POST http://localhost:3000/docentes
@@ -58,3 +59,15 @@ Content-Type: application/json
     "email": "admin@sga.com",
     "password":"ClaveDePrueba123!"
 }
+
+###
+GET http://localhost:3000/alumnos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZWI3M2U3MmNmZGNjOTczZDExZDU2NCIsInJvbCI6ImFkbWluIiwiaWF0IjoxNzk0NTA3Nzg4LCJleHAiOjE3OTQ1MTEzODh9.k4AgcRF2ommIgimtsqYGZ3mJFcoq234-P9h0xNekckA
+
+###
+GET http://localhost:3000/docentes
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZWI3M2U3MmNmZGNjOTczZDExZDU2NCIsInJvbCI6ImFkbWluIiwiaWF0IjoxNzk0NTA4MjQ0LCJleHAiOjE3OTQ1MTE4NDR9.gLKlT_T9Z1FJBsvQViCv6oA_x9UoM8MW-vu7cA22KpQ
+
+###
+GET http://localhost:3000/materias
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjZhZWI3M2U3MmNmZGNjOTczZDExZDU2NCIsInJvbCI6ImFkbWluIiwiaWF0IjoxNzk0NTA4NDY4LCJleHAiOjE3OTQ1MTIwNjh9.UPdcr242vorwcTZDfEgrxaSgq8jgRZKOHPXvim9hRYc
