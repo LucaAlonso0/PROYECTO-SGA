@@ -119,7 +119,7 @@ export function ListaAlumnos({ actualizar, onAlumnoCreado, onEditarAlumno }) {
                             >
                                 <Stack
                                     direction="row"
-                                    spacing={1}
+                                    spacing={1.5}
                                     sx={{ alignItems: "center", flexWrap: "wrap" }}
                                 >
                                     <Chip label={`Legajo ${alumno.legajo}`} color="primary" variant="outlined" size="small" />

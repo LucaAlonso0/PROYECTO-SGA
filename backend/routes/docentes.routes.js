@@ -1,23 +1,21 @@
-const express = require("express")
-const { verificarToken } = require("../controllers/middlewares/authMiddleware")
-    // const alumnosController = require("../controllers/alumnos.controller")
-const {
-    obtenerDocentes,
-    obtenerDocente,
-    crearDocente,
-    actualizarDocente,
-    eliminarDocente
-} = require("../controllers/docentes.controller")
-const router = express.Router()
+const express = require("express") 
+// const alumnosController = require("../controllers/alumnos.controller")
+const { 
+    obtenerDocentes, 
+    obtenerDocente, 
+    crearDocente, 
+    actualizarDocente, 
+    eliminarDocente } = require("../controllers/docentes.controller")
+const router = express.Router() 
 
-router.get("/", verificarToken, obtenerDocentes)
+router.get("/", obtenerDocentes) 
 
-router.get("/:id", verificarToken, obtenerDocente)
+router.get("/:id", obtenerDocente) 
 
-router.post("/", verificarToken, crearDocente)
+router.post("/", crearDocente) 
 
-router.put("/:id", verificarToken, actualizarDocente)
+router.put("/:id", actualizarDocente) 
 
-router.delete("/:id", verificarToken, eliminarDocente)
+router.delete("/:id", eliminarDocente) 
 
-module.exports = router
+module.exports = router 
