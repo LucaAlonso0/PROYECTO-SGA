@@ -5,6 +5,7 @@ import Button from "@mui/material/Button"
 import Paper from "@mui/material/Paper"
 import TextField from "@mui/material/TextField"
 import Typography from "@mui/material/Typography"
+import { useAuth } from "../context/useAuth";
 const API_ALUMNOS = "http://localhost:3000/alumnos"
 
 function FormularioA({ onAlumnoCreado, alumnoEditar, onCancelar }){
@@ -16,7 +17,7 @@ function FormularioA({ onAlumnoCreado, alumnoEditar, onCancelar }){
     })
     const [error, setError] = useState("")
     const [guardando, setGuardando] = useState(false)
-
+     const { token } = useAuth()
     function manejarCambio(e) {
         const { name, value} = e.target
 
