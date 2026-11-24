@@ -3,45 +3,15 @@ const mongoose = require("mongoose")
 const materiaSchema = new mongoose.Schema({
     codigo: {
         type: String,
-        required: [true, "El código es obligatorio"],
-        unique: true,
-        trim: true,
-        maxlength: [10, "El código no puede superar los 10 caracteres"]
+        unique: true
     },
-    nombre: {
-        type: String,
-        required: [true, "El nombre es obligatorio"],
-        trim: true,
-        minlength: [3, "El nombre debe tener al menos 3 caracteres"],
-        maxlength: [100, "El nombre no puede superar los 100 caracteres"]
-    },
-    descripcion: {
-        type: String,
-        trim: true,
-        maxlength: [300, "La descripción no puede superar los 300 caracteres"]
-    },
-    cargaHoraria: {
-        type: Number,
-        required: [true, "La carga horaria es obligatoria"],
-        min: [1, "La carga horaria debe ser mayor que cero"],
-        validate: {
-            validator: Number.isInteger,
-            message: "La carga horaria debe ser un número entero"
-        }
-    },
-    estado: {
-        type: String,
-        required: [true, "El estado es obligatorio"],
-        enum: {
-            values: ["activa", "inactiva"],
-            message: "El estado solo puede ser activa o inactiva"
-        }
-    }
-},
-{
+    nombre: String,
+    descripcion: String,
+    cargaHoraria: Number,
+    estado: String
+}, {
     versionKey: false
-}
-)
+})
 
 const Materia = mongoose.model("Materia", materiaSchema)
 
