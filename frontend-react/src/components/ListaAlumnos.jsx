@@ -14,7 +14,7 @@ export function ListaAlumnos({ actualizar, onAlumnoCreado, onEditarAlumno }) {
     const [alumnos, setAlumnos] = useState([])
     const [cargando, setCargando] = useState(true)
     const [error, setError] = useState("")
-    const { token } = useAuth()
+    const { token, usuario } = useAuth() // CAMBIO 1: usuario trae el rol
 
     async function eliminarAlumno(legajo){
         const confirmar = window.confirm("¿Seguro que querés eliminar este alumno?")
@@ -62,7 +62,7 @@ export function ListaAlumnos({ actualizar, onAlumnoCreado, onEditarAlumno }) {
         }
     }
         cargarAlumnos()
-    }, [actualizar])
+    }, [actualizar, token]) // CAMBIO 2: recarga si cambia el token
 
     if (cargando) {
         return (
@@ -132,23 +132,28 @@ export function ListaAlumnos({ actualizar, onAlumnoCreado, onEditarAlumno }) {
                                     </Box>
                                 </Stack>
                                 <Stack direction="row" spacing={1} sx={{ justifyContent: "flex-end" }}>
-                                    <Button
-                                        type="button"
-                                        onClick={() => onEditarAlumno(alumno)}
-                                        variant="outlined"
-                                        size="small"
-                                    >
-                                        Editar
-                                    </Button>
-                                    <Button
-                                        type="button"
-                                        onClick={() => eliminarAlumno(alumno.legajo)}
-                                        variant="outlined"
-                                        color="error"
-                                        size="small"
-                                    >
-                                        Eliminar
-                                    </Button>
+                                    {/* CAMBIO 3: solo el admin ve Editar y Eliminar */}
+                                    {usuario?.rol === "admin" && (
+                                        <Button
+                                            type="button"
+                                            onClick={() => onEditarAlumno(alumno)}
+                                            variant="outlined"
+                                            size="small"
+                                        >
+                                            Editar
+                                        </Button>
+                                    )}
+                                    {usuario?.rol === "admin" && (
+                                        <Button
+                                            type="button"
+                                            onClick={() => eliminarAlumno(alumno.legajo)}
+                                            variant="outlined"
+                                            color="error"
+                                            size="small"
+                                        >
+                                            Eliminar
+                                        </Button>
+                                    )}
                                 </Stack>
                             </Paper>
                         ))}
