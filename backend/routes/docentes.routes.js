@@ -1,21 +1,26 @@
-const express = require("express") 
-// const alumnosController = require("../controllers/alumnos.controller")
-const { 
-    obtenerDocentes, 
-    obtenerDocente, 
-    crearDocente, 
-    actualizarDocente, 
-    eliminarDocente } = require("../controllers/docentes.controller")
-const router = express.Router() 
+const express = require("express")
+const { verificarToken } = require("../middlewares/authMiddleware") // Comprueba que haya un token válido
+const { verificarRol } = require("../middlewares/rolMiddleware") // Comprueba el rol del usuario
+    // const alumnosController = require("../controllers/alumnos.controller")
+const {
+    obtenerDocentes,
+    obtenerDocente,
+    crearDocente,
+    actualizarDocente,
+    eliminarDocente
+} = require("../controllers/docentes.controller")
+const router = express.Router()
 
-router.get("/", obtenerDocentes) 
+// Consultas: cualquier usuario logueado
+router.get("/", verificarToken, obtenerDocentes)
 
-router.get("/:id", obtenerDocente) 
+router.get("/:id", verificarToken, obtenerDocente)
 
-router.post("/", crearDocente) 
+// Alta, modificación y baja: solo el admin
+router.post("/", verificarToken, verificarRol("admin"), crearDocente)
 
-router.put("/:id", actualizarDocente) 
+router.put("/:id", verificarToken, verificarRol("admin"), actualizarDocente)
 
-router.delete("/:id", eliminarDocente) 
+router.delete("/:id", verificarToken, verificarRol("admin"), eliminarDocente)
 
-module.exports = router 
+module.exports = router

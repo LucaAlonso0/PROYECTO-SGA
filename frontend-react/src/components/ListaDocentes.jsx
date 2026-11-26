@@ -3,11 +3,13 @@ import { Alert, Box, Button, Chip, Paper, Stack, Typography } from "@mui/materia
 
 import API_URL from "../config/api" // URL del backend (.env)
 const API_DOCENTES = `${API_URL}/docentes`
+import { useAuth } from "../context/useAuth"
 
 export function ListaDocentes({ actualizar, onDocenteCreado, onEditarDocente }) {
     const [docentes, setDocentes] = useState([])
     const [cargando, setCargando] = useState(true)
     const [error, setError] = useState("")
+    const { token, usuario } = useAuth()
 
     async function eliminarDocente(dni){
         const confirmar = window.confirm("¿Seguro que querés eliminar este alumno?")
@@ -15,8 +17,12 @@ export function ListaDocentes({ actualizar, onDocenteCreado, onEditarDocente }) 
             return
         }
         try {
-            const respuesta = await fetch(`${API_DOCENTES}/${dni}`, 
-                { method: "DELETE" }
+                      const respuesta = await fetch(`${API_DOCENTES}/${dni}`, 
+                { method: "DELETE",
+                  headers: {
+                    Authorization: `Bearer ${token}`
+                  }
+                 }
             )
             if (!respuesta.ok) {
                 throw new Error(`No se pudo eliminar. Estado HTTP: ${respuesta.status}`)
@@ -33,7 +39,9 @@ export function ListaDocentes({ actualizar, onDocenteCreado, onEditarDocente }) 
             setError("")
 
             try {
-            const respuesta = await fetch(API_DOCENTES)
+            const respuesta = await fetch(API_DOCENTES, {
+            headers: {Authorization: `Bearer ${token}`}
+            })
 
             if (!respuesta.ok){
                 throw new Error("No se pudo obtener la lista", respuesta.status)
@@ -49,7 +57,7 @@ export function ListaDocentes({ actualizar, onDocenteCreado, onEditarDocente }) 
         }
     }
         cargarDocentes()
-    }, [actualizar])
+ }, [actualizar, token])
 
     if (cargando) {
         return (
@@ -119,23 +127,27 @@ export function ListaDocentes({ actualizar, onDocenteCreado, onEditarDocente }) 
                                     </Box>
                                 </Stack>
                                 <Stack direction="row" spacing={1} sx={{ justifyContent: "flex-end" }}>
-                                    <Button
-                                        type="button"
-                                        onClick={() => onEditarDocente(docente)}
-                                        variant="outlined"
-                                        size="small"
-                                    >
-                                        Editar
-                                    </Button>
-                                    <Button
-                                        type="button"
-                                        onClick={() => eliminarDocente(docente.dni)}
-                                        variant="outlined"
-                                        color="error"
-                                        size="small"
-                                    >
-                                        Eliminar
-                                    </Button>
+                                    {usuario?.rol === "admin" && (
+                                        <Button
+                                            type="button"
+                                            onClick={() => onEditarDocente(docente)}
+                                            variant="outlined"
+                                            size="small"
+                                        >
+                                            Editar
+                                        </Button>
+                                    )}
+                                    {usuario?.rol === "admin" && (
+                                        <Button
+                                            type="button"
+                                            onClick={() => eliminarDocente(docente.dni)}
+                                            variant="outlined"
+                                            color="error"
+                                            size="small"
+                                        >
+                                            Eliminar
+                                        </Button>
+                                    )}
                                 </Stack>
                             </Paper>
                         ))}

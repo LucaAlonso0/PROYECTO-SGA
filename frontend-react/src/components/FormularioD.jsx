@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Alert, Box, Button, Paper, TextField, Typography } from "@mui/material"
 import API_URL from "../config/api" // URL del backend (.env)
 const API_DOCENTES = `${API_URL}/docentes`
+import { useAuth } from "../context/useAuth";
 
 function FormularioD({ onDocenteCreado, docenteEditar, onCancelar }){
     const [formulario, setFormulario] = useState({
@@ -11,6 +12,7 @@ function FormularioD({ onDocenteCreado, docenteEditar, onCancelar }){
         correo: docenteEditar?.correo ?? ""
     })
     const [error, setError] = useState("")
+    const { token } = useAuth()
     const [guardando, setGuardando] = useState(false)
 
     function manejarCambio(e) {
@@ -38,7 +40,7 @@ function FormularioD({ onDocenteCreado, docenteEditar, onCancelar }){
         try {
             const respuesta = await fetch(url, {
                 method: editando ? "PUT" : "POST",
-                headers: {"Content-Type":"application/json"},
+                headers: {"Content-Type":"application/json", Authorization: `Bearer ${token}`},
                 body: JSON.stringify(docente)
             })
 
