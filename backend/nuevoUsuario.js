@@ -1,7 +1,3 @@
-// Fuerza DNS públicos, igual que en tu server.js, para que conecte a Atlas
-const dns = require("dns")
-dns.setServers(["8.8.8.8", "1.1.1.1"])
-
 const mongoose = require("mongoose")
 const bcrypt = require("bcrypt") // Para hashear la contraseña
 require("dotenv").config() // Carga MONGO_URI del .env

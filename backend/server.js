@@ -1,8 +1,4 @@
 require("dotenv").config()
-
-const dns = require("dns")
-dns.setServers(["8.8.8.8", "1.1.1.1"])
-
 const express = require("express")
 const cors = require("cors")
 
@@ -22,7 +18,7 @@ app.use("/docentes", docentesRoutes)
 app.use("/materias", materiasRoutes)
 app.use("/auth", authRoutes)
 
-const PORT = process.env.PORT
+const PORT = process.env.PORT || 3000
 
 conectarDB()
 
