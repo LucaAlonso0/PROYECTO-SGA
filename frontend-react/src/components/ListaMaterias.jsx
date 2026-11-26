@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react"
 import { Alert, Box, Button, Chip, Paper, Stack, Typography } from "@mui/material"
 
-const API_MATERIAS = "http://localhost:3000/materias"
+import API_URL from "../config/api" // URL del backend (.env)
+const API_MATERIAS = `${API_URL}/materias`
 
 export function ListaMaterias({ actualizar, onMateriaCreada, onEditarMateria }) {
     const [materias, setMaterias] = useState([])

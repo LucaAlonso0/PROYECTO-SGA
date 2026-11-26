@@ -1,13 +1,22 @@
 import { useEffect, useState } from "react"
 import { AuthContext } from "./AuthContext"
+import API_URL from "../config/api" // URL del backend (.env)
 
 const AuthProvider = ({ children }) => {
     const [token, setToken] = useState(() => localStorage.getItem("token"))
     const [cargando, setCargando] = useState(true)
+        // Guarda los datos del usuario logueado (nombre, email, rol)
+    const [usuario, setUsuario] = useState(() => {
+        const guardado = localStorage.getItem("usuario")
+        return guardado ? JSON.parse(guardado) : null
+    })
 
-    const cerrarSesion = () => {
+     const cerrarSesion = () => {
         localStorage.removeItem("token")
+        localStorage.removeItem("usuario") // También borra el usuario guardado
         setToken(null)
+        setUsuario(null)
+    }
     }
 
     useEffect(() => {
@@ -20,7 +29,7 @@ const AuthProvider = ({ children }) => {
                 return
             }
             try {
-                const respuesta = await fetch("http://localhost:3000/alumnos", 
+                const respuesta = await fetch(`${API_URL}/alumnos`, 
                     {headers: {Authorization: `Bearer ${tokenGuardado}`}}
                 )
             if (!respuesta.ok) {

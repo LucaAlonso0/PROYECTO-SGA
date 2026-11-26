@@ -6,7 +6,8 @@ import Chip from "@mui/material/Chip"
 import Paper from "@mui/material/Paper"
 import Stack from "@mui/material/Stack"
 import Typography from "@mui/material/Typography"
-const API_ALUMNOS = "http://localhost:3000/alumnos"
+import API_URL from "../config/api" // URL del backend (.env)
+const API_ALUMNOS = `${API_URL}/alumnos`
 import { useAuth } from "../context/useAuth"
 
 export function ListaAlumnos({ actualizar, onAlumnoCreado, onEditarAlumno }) {

@@ -3,6 +3,7 @@ import {Alert, Box, Button, TextField, Typography } from "@mui/material"
 import { useTheme } from "@mui/material/styles" 
 import { useAuth } from "../context/useAuth"
 import { useNavigate } from "react-router-dom"
+import API_URL from "../config/api" // URL del backend (.env)
 
 export default function Login() {
     const navigate = useNavigate()
@@ -26,7 +27,7 @@ export default function Login() {
         setMensaje("")
 
         try {
-            const respuesta = await fetch("http://localhost:3000/auth/login",
+            const respuesta = await fetch(`${API_URL}/auth/login`,
                 {
                     method: "POST",
                     headers: {"Content-Type":"application/json"},
