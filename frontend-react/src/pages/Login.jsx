@@ -37,17 +37,10 @@ export default function Login() {
                 throw new Error(datos.mensaje || "No se pudo iniciar sesión")
             }
             localStorage.setItem("token", datos.token)
-            // Guarda los datos del usuario para que no se pierdan al recargar
-            const datosUsuario = {
-                id: datos.id,
-                nombre: datos.nombre,
-                email: datos.email,
-                rol: datos.rol
-            }
-            localStorage.setItem("usuario", JSON.stringify(datosUsuario))
+            localStorage.setItem("usuario", datos.usuario)
             setToken(datos.token)
 
-            setUsuario(datosUsuario)
+            setUsuario(datos)
             setMensaje(datos.mensaje)
 
             setEmail("")
