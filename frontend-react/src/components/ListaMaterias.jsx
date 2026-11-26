@@ -3,11 +3,13 @@ import { Alert, Box, Button, Chip, Paper, Stack, Typography } from "@mui/materia
 
 import API_URL from "../config/api" // URL del backend (.env)
 const API_MATERIAS = `${API_URL}/materias`
+import { useAuth } from "../context/useAuth"
 
 export function ListaMaterias({ actualizar, onMateriaCreada, onEditarMateria }) {
     const [materias, setMaterias] = useState([])
     const [cargando, setCargando] = useState(true)
     const [error, setError] = useState("")
+    const { token, usuario } = useAuth()
 
     async function eliminarMateria(codigo){
         const confirmar = window.confirm("¿Seguro que querés eliminar esta materia?")
@@ -16,7 +18,11 @@ export function ListaMaterias({ actualizar, onMateriaCreada, onEditarMateria }) 
         }
         try {
             const respuesta = await fetch(`${API_MATERIAS}/${codigo}`, 
-                { method: "DELETE" }
+                { method: "DELETE",
+                headers: {
+                Authorization: `Bearer ${token}`
+                  }
+                 }
             )
             if (!respuesta.ok) {
                 throw new Error(`No se pudo eliminar. Estado HTTP: ${respuesta.status}`)
@@ -33,7 +39,9 @@ export function ListaMaterias({ actualizar, onMateriaCreada, onEditarMateria }) 
             setError("")
 
             try {
-            const respuesta = await fetch(API_MATERIAS)
+                const respuesta = await fetch(API_MATERIAS, {
+                  headers: {Authorization: `Bearer ${token}`}
+            })
 
             if (!respuesta.ok){
                 throw new Error("No se pudo obtener la lista", respuesta.status)
@@ -49,7 +57,7 @@ export function ListaMaterias({ actualizar, onMateriaCreada, onEditarMateria }) 
         }
     }
         cargarMaterias()
-    }, [actualizar])
+    }, [actualizar, token])
 
     if (cargando) {
         return (
@@ -119,23 +127,27 @@ export function ListaMaterias({ actualizar, onMateriaCreada, onEditarMateria }) 
                                     </Box>
                                 </Stack>
                                 <Stack direction="row" spacing={1} sx={{ justifyContent: "flex-end" }}>
-                                    <Button
-                                        type="button"
-                                        onClick={() => onEditarMateria(materia)}
-                                        variant="outlined"
-                                        size="small"
-                                    >
-                                        Editar
-                                    </Button>
-                                    <Button
-                                        type="button"
-                                        onClick={() => eliminarMateria(materia.codigo)}
-                                        variant="outlined"
-                                        color="error"
-                                        size="small"
-                                    >
-                                        Eliminar
-                                    </Button>
+                                    {usuario?.rol === "admin" && (
+                                        <Button
+                                            type="button"
+                                            onClick={() => onEditarMateria(materia)}
+                                            variant="outlined"
+                                            size="small"
+                                        >
+                                            Editar
+                                        </Button>
+                                    )}
+                                    {usuario?.rol === "admin" && (
+                                        <Button
+                                            type="button"
+                                            onClick={() => eliminarMateria(materia.codigo)}
+                                            variant="outlined"
+                                            color="error"
+                                            size="small"
+                                        >
+                                            Eliminar
+                                        </Button>
+                                    )}
                                 </Stack>
                             </Paper>
                         ))}

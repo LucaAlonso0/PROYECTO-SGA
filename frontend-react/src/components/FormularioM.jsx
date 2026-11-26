@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Alert, Box, Button, Paper, TextField, Typography } from "@mui/material"
 import API_URL from "../config/api" // URL del backend (.env)
 const API_MATERIAS = `${API_URL}/materias`
+import { useAuth } from "../context/useAuth";
 
 function FormularioM ({ onMateriaCreada, materiaEditar, onCancelar }){
     const [formulario, setFormulario] = useState({
@@ -13,6 +14,7 @@ function FormularioM ({ onMateriaCreada, materiaEditar, onCancelar }){
     })
     const [error, setError] = useState("")
     const [guardando, setGuardando] = useState(false)
+        const { token } = useAuth()
 
     function manejarCambio(e) {
         const { name, value} = e.target
@@ -39,7 +41,7 @@ function FormularioM ({ onMateriaCreada, materiaEditar, onCancelar }){
         try {
             const respuesta = await fetch(url, {
                 method: editando ? "PUT" : "POST",
-                headers: {"Content-Type":"application/json"},
+                headers: {"Content-Type":"application/json", Authorization: `Bearer ${token}`},
                 body: JSON.stringify(materia)
             })
 
