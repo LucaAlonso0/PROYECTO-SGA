@@ -1,23 +1,23 @@
-const express = require("express") 
-// const alumnosController = require(
-const { verificarToken } = require("../middlewares/authMiddleware") // Importar el middleware de verificación de token
+const express = require("express")
+const { verificarToken } = require("../middlewares/authMiddleware") // Comprueba que haya un token válido
+const { verificarRol } = require("../middlewares/rolMiddleware") // NUEVO: comprueba el rol del usuario
 
-const { 
-    obtenerAlumnos, 
-    obtenerAlumno, 
-    crearAlumno, 
-    actualizarAlumno, 
-    eliminarAlumno } = require("../controllers/alumnos.controller")
-const router = express.Router() 
+const {
+    obtenerAlumnos,
+    obtenerAlumno,
+    crearAlumno,
+    actualizarAlumno,
+    eliminarAlumno
+} = require("../controllers/alumnos.controller")
+const router = express.Router()
 
-router.get("/", verificarToken, obtenerAlumnos) // Ruta para obtener todos los alumnos, protegida por el middleware de verificación de token
+// Consultas: cualquier usuario logueado
+router.get("/", verificarToken, obtenerAlumnos)
+router.get("/:id", verificarToken, obtenerAlumno)
 
-router.get("/:id", verificarToken, obtenerAlumno) 
+// Alta, modificación y baja: solo el admin
+router.post("/", verificarToken, verificarRol("admin"), crearAlumno)
+router.put("/:id", verificarToken, verificarRol("admin"), actualizarAlumno)
+router.delete("/:id", verificarToken, verificarRol("admin"), eliminarAlumno)
 
-router.post("/", verificarToken, crearAlumno) 
-
-router.put("/:id", verificarToken, actualizarAlumno) 
-
-router.delete("/:id",verificarToken, eliminarAlumno) 
-
-module.exports = router 
+module.exports = router
