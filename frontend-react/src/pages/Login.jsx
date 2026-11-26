@@ -7,10 +7,9 @@ import API_URL from "../config/api" // URL del backend (.env)
 
 export default function Login() {
     const navigate = useNavigate()
-    const { setToken } = useAuth()
+    const { setToken, usuario, setUsuario } = useAuth() // usuario viene del contexto
 
     const theme = useTheme()
-    const [usuario, setUsuario] = useState(null)
 
     const [ error, setError] = useState("")
     const [ cargando, setCargando ] = useState(false)
@@ -23,7 +22,6 @@ export default function Login() {
         e.preventDefault()
         setError("")
         setCargando(true)
-        setUsuario(null)
         setMensaje("")
 
         try {
@@ -39,9 +37,17 @@ export default function Login() {
                 throw new Error(datos.mensaje || "No se pudo iniciar sesión")
             }
             localStorage.setItem("token", datos.token)
+            // Guarda los datos del usuario para que no se pierdan al recargar
+            const datosUsuario = {
+                id: datos.id,
+                nombre: datos.nombre,
+                email: datos.email,
+                rol: datos.rol
+            }
+            localStorage.setItem("usuario", JSON.stringify(datosUsuario))
             setToken(datos.token)
 
-            setUsuario(datos)
+            setUsuario(datosUsuario)
             setMensaje(datos.mensaje)
 
             setEmail("")
